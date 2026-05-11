@@ -50,7 +50,7 @@ site and deploys it to GitHub Pages from the `main` branch.
    - `CONTACT_PHONE`
    - `CONTACT_PHONE_HREF`, such as `+15555555555`
    - `CONTACT_EMAIL`
-   - `SITE_URL`, such as `https://yourname.github.io/ava-4-bday`
+   - `SITE_URL`, usually `https://shoedog.github.io/a4-bday`
    - `SUPABASE_URL`
    - `SUPABASE_ANON_KEY`
 7. Push to `main` or run the `Deploy to GitHub Pages` workflow manually.
