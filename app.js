@@ -26,6 +26,7 @@
     contactPhone: document.querySelector("#contact-phone"),
     contactEmail: document.querySelector("#contact-email"),
     inviteCode: document.querySelector("#invite-code"),
+    inviteCodeField: document.querySelector("#invite-code-field"),
     guestCode: document.querySelector("#guest-code"),
     guestCodeForm: document.querySelector("#guest-code-form")
   };
@@ -66,13 +67,18 @@
   function hydrateInviteCode() {
     const url = new URL(window.location.href);
     const hashParams = new URLSearchParams(url.hash.replace(/^#/, ""));
-    const code =
+    const codeFromUrl =
       cleanText(url.searchParams.get("code")) ||
       cleanText(url.searchParams.get("party")) ||
-      cleanText(hashParams.get("code")) ||
-      cleanText(sessionStorage.getItem(codeStorageKey));
+      cleanText(hashParams.get("code"));
+    const code = codeFromUrl || cleanText(sessionStorage.getItem(codeStorageKey));
 
     syncInviteCode(code, "init");
+
+    if (codeFromUrl) {
+      persistInviteCode(codeFromUrl);
+      setCodeFieldsVisible(false);
+    }
   }
 
   function configureBackend() {
@@ -85,7 +91,9 @@
     if (hasSupabase) {
       backendMode = "supabase";
       supabaseClient = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
-      elements.storageMode.textContent = "Party code required for shared RSVPs.";
+      elements.storageMode.textContent = getInviteCode()
+        ? "Shared RSVP list is connected."
+        : "Use the link from the school email to RSVP.";
       return;
     }
 
@@ -160,7 +168,7 @@
     const code = cleanText(elements.guestCode.value);
 
     if (backendMode === "supabase" && !code) {
-      setGuestMessage("Enter the party code to view the guest list.");
+      setGuestMessage("Use the link from the school email, or enter the party code to view RSVPs.");
       return;
     }
 
@@ -235,13 +243,13 @@
       const rows = await loadRows();
 
       if (rows === null) {
-        renderGuestList([], "Enter the party code to view the guest list.");
+        renderGuestList([], "Use the link from the school email, or enter the party code to view RSVPs.");
         return;
       }
 
       renderGuestList(rows);
     } catch (error) {
-      renderGuestList([], "Guest list could not load. Check the party code.");
+      renderGuestList([], "RSVP list could not load. Check the party code.");
       console.error(error);
     }
   }
@@ -322,6 +330,11 @@
     if (code) {
       sessionStorage.setItem(codeStorageKey, code);
     }
+  }
+
+  function setCodeFieldsVisible(visible) {
+    elements.inviteCodeField.hidden = !visible;
+    elements.guestCodeForm.hidden = !visible;
   }
 
   function getGuestToken() {

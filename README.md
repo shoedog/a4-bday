@@ -1,6 +1,6 @@
 # Ava Jinks 4th Birthday Website
 
-Static rainbow unicorn birthday invite with RSVP and guest-list support.
+Static rainbow unicorn birthday invite with RSVP tracking.
 
 ## Preview Locally
 
@@ -41,9 +41,11 @@ site and deploys it to GitHub Pages from the `main` branch.
    ```sql
    select public.create_invite_code('replace-with-your-party-code', 'Ava birthday');
    ```
-   Share that code with invited guests. You can also add it to the invite link
-   as `?code=replace-with-your-party-code` if you are comfortable with anyone
-   who has the full URL being able to RSVP and view the guest list.
+   Send the invite URL with that code in the query string to the school admin,
+   and ask them to forward it to parents:
+   `https://shoedog.github.io/a4-bday/?code=replace-with-your-party-code`
+   Parents who use that link will not need to type a code. Anyone with the full
+   forwarded URL can RSVP and view the RSVP list.
 4. Push this folder to a GitHub repo.
 5. In the GitHub repo, go to Settings -> Pages and set Source to GitHub Actions.
 6. In Settings -> Secrets and variables -> Actions -> Variables, add:
@@ -75,8 +77,25 @@ key belongs in the browser.
 
 The Supabase schema does not grant direct anonymous reads or writes on the RSVP
 tables. The browser calls RPC functions that require the party code. RSVP notes
-are accepted for the host, but the guest-list function returns only names and
+are accepted for the host, but the RSVP-list function returns only names and
 headcounts for attending guests.
+
+## School Email Template
+
+Hi families,
+
+Ava Jinks is turning 4 and would love to celebrate with daycare friends.
+
+Date: Tuesday, June 2, 2026  
+Time: 4:00 PM to 7:00 PM  
+Location: Centennial Center Park, 13050 E. Peakview Ave., Centennial, CO 80112
+
+Pizza, snacks, and drinks will be provided. The playground will be open, and the
+splash pad should be open as well. A swimsuit and towel are recommended for kids
+who want water play, but they are optional.
+
+Please RSVP here:
+`https://shoedog.github.io/a4-bday/?code=replace-with-your-party-code`
 
 AWS S3 + CloudFront also works for the static files, but GitHub Pages or
 Cloudflare Pages are usually cheaper and simpler for this size of site.

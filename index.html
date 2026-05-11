@@ -37,7 +37,7 @@
       <nav>
         <a href="#details">Details</a>
         <a href="#rsvp">RSVP</a>
-        <a href="#guest-list">Guest list</a>
+        <a href="#guest-list">RSVPs</a>
       </nav>
     </header>
 
@@ -140,7 +140,7 @@
                 />
               </label>
 
-              <label class="field">
+              <label id="invite-code-field" class="field">
                 <span>Party code</span>
                 <input
                   id="invite-code"
@@ -196,10 +196,10 @@
           <aside id="guest-list" class="guest-panel" aria-labelledby="guest-title">
             <div class="guest-header">
               <div>
-                <p class="eyebrow">Guest list</p>
+                <p class="eyebrow">RSVP list</p>
                 <h2 id="guest-title">Who's coming</h2>
               </div>
-              <button id="refresh-button" class="refresh-button" type="button" aria-label="Refresh guest list">
+              <button id="refresh-button" class="refresh-button" type="button" aria-label="Refresh RSVP list">
                 Refresh
               </button>
             </div>
@@ -217,7 +217,7 @@
                   placeholder="Party code"
                 />
               </label>
-              <button class="button secondary" type="submit">View list</button>
+              <button class="button secondary" type="submit">View RSVPs</button>
             </form>
 
             <div class="rsvp-totals" aria-label="RSVP totals">
